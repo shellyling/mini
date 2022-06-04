@@ -1,0 +1,130 @@
+
+var navigationHtml = function () {/*
+<div class="navigation">
+  <div class="prevBtn" value="">
+    <h5 class="area">金山區</h5>
+    <h5 class="place">朱銘美術館</h5>
+    <div class="arrow"><i class="iconfont icon-angle-left"></i></div>
+  </div>
+  <div class="nextBtn" value="">
+    <h5 class="area">金山區</h5>
+    <h5 class="place">中角灣國際衝浪基地</h5>
+    <div class="arrow"><i class="iconfont icon-angle-right"></i></div>
+  </div>
+</div>
+*/}.toString().slice(15, -3);
+
+var naviHtml = function () {/*
+    <li class="showcenterBtn" value="showcenter">展示中心</li>
+    <li class="exploreBtn" value="explore">探索更多MINI</li>
+
+        <!--<li class="pdfBtn" value="pdf">型錄下載</li>
+        <li class="specBtn" value="spec" data-toggle="modal" data-target="#spec1Modal">技術數據</li>-->
+        <li class="bookingBtn" data-toggle="modal" data-target="#bookingModal">預約賞車</li>
+        <!--<li class="share">FOLLOW</li>-->
+        <li class="socialBtn fbBtn">
+          <i class="iconfont icon-facebookfacebook52"></i>
+        </li>
+        <li class="socialBtn igBtn"><i class="iconfont icon-ins"></i></li>
+        <li class="socialBtn lineBtn"><i class="iconfont icon-line"></i></li>
+*/}.toString().slice(15, -3);
+
+var menuHtml = function () {/*
+    <li class="menuBtn" value="home">
+          <div class="btn">
+            <p class="over">HOME</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="taipei">
+          <div class="btn">
+            <p class="over">台北</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="taoyuan">
+          <div class="btn">
+            <p class="over">桃園</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="hsinchu">
+          <div class="btn">
+            <p class="over">新竹</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="taichung">
+          <div class="btn">
+            <p class="over">台中</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="nantou">
+          <div class="btn">
+            <p class="over">南投</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="tainan">
+          <div class="btn">
+            <p class="over">台南</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="kaohsiung">
+          <div class="btn">
+            <p class="over">高雄</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="pingtung">
+          <div class="btn">
+            <p class="over">屏東</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="hualien">
+          <div class="btn">
+            <p class="over">花蓮</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn" value="taitung">
+          <div class="btn">
+            <p class="over">台東</p>
+            <span></span>
+          </div>
+        </li>
+        <li class="menuBtn showcenterBtn" value="showcenter">
+          <div class="btn">
+            <p class="over">展示中心</p><span></span>
+          </div>
+        </li>
+        <li class="menuBtn exploreBtn" value="explore">
+          <div class="btn">
+            <p class="over">探索更多MINI</p><span></span>
+          </div>
+        </li>
+        <li class="menuBtn bookingBtn" value="booking" data-toggle="modal" data-target="#bookingModal">
+          <div class="btn">
+            <p class="over">預約賞車</p><span></span>
+          </div>
+        </li>
+        
+        <!--
+        <li class="menuBtn pdfBtn" value="pdf">
+          <div class="btn">
+            <p class="over">型錄下載</p>
+            <span></span>
+          </div>
+        </li>
+        <li id="" class="menuBtn specBtn" value="spec" data-toggle="modal" data-target="#specModal"><div class="btn">
+				  <p class="over">技術數據</p><span></span>
+		  	</div></li>
+        -->
+*/}.toString().slice(15, -3);
+
+var bookingHtml = function () {/*
+    
+*/}.toString().slice(15, -3);

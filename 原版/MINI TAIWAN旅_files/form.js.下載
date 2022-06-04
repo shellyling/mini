@@ -1,0 +1,166 @@
+
+//建立類別
+var FORM = function () { };
+//建立屬性
+FORM.apiURL = "https://main-tw.mini.com.tw";
+$.validator.methods.mobile = function (value, element) {
+	return this.optional(element) || /^09[0-9]{8}$/.test(value);
+}
+
+//建立方法
+FORM.setupForm = function () {
+	//console.log("setupForm:");
+	//load CarModel
+	$("#carmodel").empty();
+	$.getJSON(FORM.apiURL + "/reserve/getallmodel", function (result) {
+		$.each(result, function (i, field) {
+			$("#carmodel").append(new Option(field.name, field.id));
+		});
+		$("#carmodel").val(2);
+		//$("#carmodel option[text='MINI JCW COUNTRYMAN ALL4運動休旅']").attr("selected", true);
+	});
+
+	//load Brand
+	$("#brand").empty();
+	$.getJSON(FORM.apiURL + "/reserve/getallbrand", function (result) {
+		$("#brand").append(new Option("請選擇", 0));
+		$.each(result, function (i, field) {
+			$("#brand").append(new Option(field.name, field.id));
+		});
+	});
+
+	//load Dealer
+	$("#dealer").empty();
+	$.getJSON(FORM.apiURL + "/reserve/getalldealer", function (result) {
+		$("#dealer").append(new Option("請選擇", 0));
+		$.each(result, function (i, field) {
+			$("#dealer").append(new Option(field.name, field.id));
+		});
+	});
+
+	var form = $('#frmpost');
+	form.validate({
+		rules: {
+			lastname: { required: true },
+			firstname: { required: true },
+			email: { required: true, email: true },
+			phone: { required: true, mobile: true },
+			//age: { required: true },
+			gender: { required: true },
+			//city: { required: true },
+			//area: { required: true },
+			//address: { required: true },
+			//reseller_city: { required: true },
+			//reseller_store: { required: true },
+			agree: { required: true }
+		},
+		messages: {
+			lastname: "請輸入您的姓氏",
+			firstname: "請輸入您的名字",
+			email: "請輸入Email",
+			phone: "請輸入您的聯絡電話",
+			//age: "請選擇您的年齡",
+			gender: "請選擇您的性別",
+			//city: "請選擇縣市",
+			//area: "請選擇區域",
+			//address: "請填寫您的聯絡地址",
+			//reseller_city: "請選擇經銷商地區",
+			//reseller_store: "請選擇經銷商",
+			//brand: "",
+			agree: "請先閱讀條款，並勾選同意"
+		},
+		showErrors: function (errorMap, errorList) {
+			var err = [];
+			$.each(errorList, function (i, v) {
+				err.push(v.message);
+			});
+			if (err.length > 0) alert(err.join("\n"));
+		},
+		onfocusout: false,
+		onkeyup: false,
+		onclick: false,
+	});
+
+	var isAjax = false;
+	$("#sentBtn").off("click");
+	$('#sentBtn').on('click', function () {
+
+		var username = $('#firstname').val();
+		if (form.valid()) {
+			//console.log();
+			if ($("#brand option:selected").val() == "0") {
+				confirm("請選擇您的愛車品牌");
+				return;
+			}
+			if ($("#dealer option:selected").val() == "0") {
+				confirm("請選擇與您最近的展示中心");
+				return;
+			}
+			if (confirm('親愛的' + username + '，以上資料已確認無誤?')) {
+				sendSubmit();
+				if (isAjax == false) {
+					isAjax = true;
+					console.log(form.serialize());
+					$("#loading").show();
+					gsap.to($("#loading"), 0.5, { alpha: 1, ease: Power2.easeOut });
+					$.ajax({
+						url: FORM.apiURL + '/reserve/process',
+						type: "POST",
+						datatype: "json",
+						data: form.serialize(),
+						success: function (data) {
+							console.log(data);
+							alert(data.message);
+							if (data.status == 0) {
+								resetForm();
+								sendFinish();
+							}
+						},
+						complete: function () {
+							isAjax = false;
+							console.log('complete');
+							gsap.to($("#loading"), 0.5, { alpha: 0, ease: Power2.easeOut, onComplete: function () { $("#loading").hide(); } });
+						},
+						error: function (xhr, ajaxOptions, thrownError) {
+							console.log('error');
+							gsap.to($("#loading"), 0.5, { alpha: 0, ease: Power2.easeOut, onComplete: function () { $("#loading").hide(); } });
+						}
+					});
+				} else {
+					alert("送出中, 請稍後...");
+				}
+			}
+		}
+	});
+};
+
+function resetForm() {
+	$("input").val("");
+	$("input[type='checkbox']").attr("checked", false);
+	/* $("select").each(function () {
+		this.selectedIndex = 0;
+	}); */
+}
+
+function sendSubmit() {
+	ROOT.send2GA("button", "sentBtn");
+
+
+}
+
+
+function sendFinish() {
+
+	ROOT.send2GA("button", "bookingSuccess");
+
+	//fbq('track', 'CompleteRegistration');
+	fbq('trackSingleCustom', '353940183091410', 'CompleteRegistration');
+
+	gtag('event', 'conversion', { 'send_to': 'AW-311735803/hiLcCN2Hh5QDEPvr0pQB' });
+
+	_lt('send', 'cv', {
+		type: 'ConvTaiwanTravel'
+	}, ['04349a9d-2cb8-4155-92d7-9511847cfd2c']);
+}
+
+

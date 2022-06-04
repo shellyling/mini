@@ -1,0 +1,179 @@
+//建立類別
+var THIS = function () { };
+
+//建立屬性
+THIS.id = 0;
+THIS.hash = "";
+THIS.hash2 = "";
+
+//建立方法
+THIS.reset = function () {
+	gsap.to($("#homeArea .bk"), 0.5, { alpha: 0.5, ease: Power2.easeOut });
+	THIS.checkURL();
+
+}
+THIS.resize = function () {
+	//THIS.setupSkrollr();
+	if (ROOT.device != "m") {
+	} else {
+	}
+
+}
+
+THIS.checkURL = function () {
+	var hash = String(location.hash);
+	//console.log("checkURL:" + hash);
+	if (hash.indexOf("/") == -1) {
+		THIS.hash = hash.substr(1, hash.length - 1);
+	} else {
+		//console.log("/:"+hash.indexOf("/"));
+		THIS.hash = hash.substr(1, hash.indexOf("/") - 1);
+	}
+
+	//console.log(THIS.hash + " : " + THIS.hash2);
+}
+
+THIS.goto = function (sname) {
+	var ans = $("#taichungArea").offset().top - $("nav").height();
+	//console.log("goto:" + ans);
+	//console.log("THIS.goto:" + sname);
+	var section = $("#" + sname + "Area");
+	//console.log(section.offset().top, $("nav").height());
+	var ans = section.offset().top - $("nav").height();
+	//console.log(ans);
+	gsap.to($("html,body"), 1, { scrollTop: ans, ease: Power2.easeOut, onComplete: complete });
+	function complete() {
+		//window.location.hash = sname;
+
+		/* if (ROOT.hash2 != "") {
+			THIS.showView(sname, ROOT.hash2);
+		} */
+		//ROOT.hash = "";
+	}
+}
+
+
+THIS.enter = function () {
+	if (THIS.hash != "") {
+		//console.log("THIS.enter ");
+		THIS.goto(THIS.hash);
+	}
+	THIS.loop();
+}
+THIS.loop = function () {
+
+}
+THIS.scroll = function () {
+	//console.log(ROOT.scrollTop);
+	var introTop = $("#introArea").offset().top;
+	var ans = (ROOT.scrollTop / introTop) * 0.5;
+	//console.log(ans);
+	gsap.to($("#homeArea .bk"), 1, { alpha: ans + 0.5, ease: Power2.easeOut });
+	gsap.to($("#homeArea h1"), 1, { y: -ans * 200, ease: Power2.easeOut });
+	if (ROOT.scrollTop < 500) {
+		window.location.hash = "home";
+	}
+}
+
+
+
+THIS.setup = function () {
+
+	$("section.city .txtBox, .moreBtn").off("click");
+	$("section.city .txtBox, .moreBtn").click(function (e) {
+		var val = $(this).attr("value");
+		//console.log(val);
+		ROOT.send2GA("button", "cityBtn_" + val);
+		window.open("city.html#" + val + "/", "_self");
+	});
+
+
+
+	$("section.city .picBox .pic").off("mouseover").off("mouseout").off("click");
+	$("section.city .picBox .pic").mouseover(function (e) {
+		if (ROOT.device == "m") { return; }
+		gsap.to($(this), 0.7, { scale: 1.05, ease: Power1.easeOut });
+	});
+	$("section.city .picBox .pic").mouseout(function (e) {
+		if (ROOT.device == "m") { return; }
+		gsap.to($(this), 0.7, { scale: 1, ease: Power1.easeOut });
+	});
+
+
+	if (!ROOT.isFontLoaded) {
+		ROOT.fontBackFunc = ROOT.enter;
+		ROOT.setupFont();
+	}
+
+
+	//ROOT.enter();
+
+}
+
+
+var skr;
+THIS.setupSkrollr = function () {
+	//console.log($("body").height());
+	//console.log(ROOT.winH);
+	var mainH = $("body").height() - ROOT.winH;
+	var hsinchuTop = Math.floor($("#hsinchuArea").offset().top / ROOT.winH * 100);
+	//console.log(hsinchuTop);
+
+	if (skr != undefined) {
+		skr.destroy();
+	}
+	skr = skrollr.init({
+		smoothScrolling: true,
+		forceHeight: false,
+		constants: {
+			hsinchu: hsinchuTop + "p"
+		},
+		render: function (data) {
+			//Log the current scroll position.
+			//console.log(data);
+		},
+		keyframe: function (element, name, direction) {
+			if (direction == "down") {
+				//console.log(name);
+			}
+		}
+	});
+
+}
+
+
+
+
+
+//台北 taipei,桃園 taoyuan,新竹 hsinchu,台中 taichung ,南投 nantou,台南 tainan,高雄 kaohsiung,屏東 pingtung,花蓮 hualien,台東 taitung
+THIS.pageObj = {
+	"home": false, "intro": false, "taipei": false, "taoyuan": false, "hsinchu": false, "taichung": false,
+	"nantou": false, "tainan": false, "kaohsiung": false, "pingtung": false, "hualien": false, "taitung": false,
+};
+THIS.aniList = {
+	"home": [],
+	"intro": [],
+	"taipei": [".picBox", ".cube", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],//
+	"taoyuan": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],
+	"hsinchu": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],
+	"taichung": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],//
+	"nantou": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],
+	"tainan": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],
+	"kaohsiung": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],
+	"pingtung": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],
+	"hualien": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],
+	"taitung": [".cube", ".picBox", ".txtBox h2", ".txtBox p", ".txtBox .moreBtn"],
+
+}
+THIS.playAni = function (sname, way) {
+	//console.log("playAni:" + sname, way);
+	if (way == "enter") {
+		//window.location.hash = sname;
+	}
+	if (THIS.aniList[sname] == undefined) {
+		return;
+	}
+	var area = $("#" + sname + "Area");
+
+}
+
